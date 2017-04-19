@@ -1,5 +1,5 @@
 class CatRentalRequestsController < ApplicationController
-  helper_method :validate_user
+  # helper_method :validate_user
 
   def approve
     current_cat_rental_request.approve!
@@ -8,6 +8,7 @@ class CatRentalRequestsController < ApplicationController
 
   def create
     @rental_request = CatRentalRequest.new(cat_rental_request_params)
+    @rental_request.user_id = current_user.id
     if @rental_request.save
       redirect_to cat_url(@rental_request.cat)
     else
@@ -23,10 +24,6 @@ class CatRentalRequestsController < ApplicationController
 
   def new
     @rental_request = CatRentalRequest.new
-  end
-
-  def validate_user
-    !current_user.cats.where(id: params[:id]).empty?
   end
 
   private

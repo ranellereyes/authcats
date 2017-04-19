@@ -52,4 +52,5 @@ class CatsController < ApplicationController
     redirect_to cats_url if @cat.empty?
     @cat = @cat.first
   end
+
 end
