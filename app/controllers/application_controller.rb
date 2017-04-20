@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
     !current_user.cats.where(id: params[:id]).empty?
   end
 
-  def get_requester(id)
+  def get_requesters(id)
     User.find(id).username
   end
 

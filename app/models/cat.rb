@@ -11,6 +11,10 @@ class Cat < ActiveRecord::Base
     dependent: :destroy
   )
 
+  has_many :renters,
+    through: :rental_requests,
+    source: :requester
+
   belongs_to :owner,
     primary_key: :id,
     foreign_key: :user_id,

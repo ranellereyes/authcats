@@ -28,9 +28,9 @@ class User < ActiveRecord::Base
     # self.save!
   end
 
-  def self.generate_session_token
-    SecureRandom::urlsafe_base64(32)
-  end
+  # def self.generate_session_token
+  #   SecureRandom::urlsafe_base64(32)
+  # end
 
   def password=(password)
     @password = password
@@ -39,6 +39,10 @@ class User < ActiveRecord::Base
 
   def is_password?(password)
     BCrypt::Password.new(self.password_digest).is_password?(password)
+  end
+
+  def method_name
+
   end
 
 end

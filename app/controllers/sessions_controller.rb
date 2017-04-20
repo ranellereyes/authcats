@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
       params[:user][:username], params[:user][:password])
     if @user
       login(@user)
+      fail
       redirect_to user_url(@user)
     else
       flash[:errors] = ["Invalid credentials"]

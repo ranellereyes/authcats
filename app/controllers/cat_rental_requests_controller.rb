@@ -1,5 +1,4 @@
 class CatRentalRequestsController < ApplicationController
-  # helper_method :validate_user
 
   def approve
     current_cat_rental_request.approve!
@@ -8,11 +7,21 @@ class CatRentalRequestsController < ApplicationController
 
   def create
     @rental_request = CatRentalRequest.new(cat_rental_request_params)
-    @rental_request.user_id = current_user.id
+
+    if current_user
+      if current_user.cats.where(id: params[:cat_rental_request][:cat_id]).empty?
+        @rental_request.user_id = current_user.id
+      else
+        flash.now[:errors] = ['You can\'t rent your own cat']
+      end
+    end
+
     if @rental_request.save
       redirect_to cat_url(@rental_request.cat)
     else
-      flash.now[:errors] = @rental_request.errors.full_messages
+      if flash.now[:errors].nil?
+        flash.now[:errors] = @rental_request.errors.full_messages
+      end
       render :new
     end
   end
@@ -27,6 +36,8 @@ class CatRentalRequestsController < ApplicationController
   end
 
   private
+
+
   def current_cat_rental_request
     @rental_request ||=
       CatRentalRequest.includes(:cat).find(params[:id])
